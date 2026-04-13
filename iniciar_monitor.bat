@@ -1,2 +1,3 @@
 @echo off
-start "" pythonw "C:\Users\lucas\Desktop\G3\Scripts\monitor_mapa\monitor_mapa.py"
+cd /d "C:\Users\lucas\Desktop\G3\Scripts\MonitorMapa"
+start "" "C:\Users\lucas\Desktop\G3\Scripts\MonitorMapa\venv\Scripts\pythonw.exe" "C:\Users\lucas\Desktop\G3\Scripts\MonitorMapa\monitor_mapa.py"

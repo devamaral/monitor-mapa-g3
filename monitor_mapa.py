@@ -52,6 +52,9 @@ SNAPSHOT_FILE = "snapshot_anterior.json"
 # Arquivo de log
 LOG_FILE = "monitor_mapa.log"
 
+# Intervalo de verificação em minutos (padrão: 5 min)
+INTERVALO_MINUTOS = 5
+
 # =========================================================
 
 # Escopos necessários para renomear arquivo no Drive
@@ -68,8 +71,12 @@ _handler_arquivo = logging.handlers.RotatingFileHandler(
 )
 _handler_arquivo.setFormatter(_formato)
 
+_handler_console = logging.StreamHandler()
+_handler_console.setFormatter(_formato)
+
 logging.root.setLevel(logging.INFO)
 logging.root.addHandler(_handler_arquivo)
+logging.root.addHandler(_handler_console)
 
 log = logging.getLogger(__name__)
 
@@ -106,7 +113,14 @@ def autenticar_drive():
 def baixar_kml():
     """Baixa o KML atual do mapa (suporta KML e KMZ)."""
     try:
-        resposta = requests.get(KML_URL, timeout=30)
+        # Adiciona timestamp na URL para evitar cache do servidor
+        url = f"{KML_URL}&_t={int(time.time())}"
+        headers = {
+            "Cache-Control": "no-cache, no-store",
+            "Pragma": "no-cache",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        }
+        resposta = requests.get(url, timeout=30, headers=headers)
         resposta.raise_for_status()
 
         content_type = resposta.headers.get("Content-Type", "")
@@ -237,6 +251,8 @@ def verificar_mapa():
         log.warning("Nenhuma marcação encontrada no KML. Verifique a URL.")
         return
 
+    log.info(f"  {len(snapshot_atual)} marcação(ões) encontrada(s) no mapa.")
+
     snapshot_anterior = carregar_snapshot_anterior()
 
     if snapshot_anterior is None:
@@ -268,7 +284,7 @@ def verificar_mapa():
 def main():
     log.info("=" * 50)
     log.info("  Monitor de Mapa iniciado")
-    log.info(f"  Verificação a cada 2 horas")
+    log.info(f"  Verificação a cada {INTERVALO_MINUTOS} minuto(s)")
     log.info("=" * 50)
 
     # Autentica logo ao iniciar (abre o navegador só uma vez)
@@ -279,12 +295,16 @@ def main():
     # Executa imediatamente na primeira vez
     verificar_mapa()
 
-    # Agenda para rodar a cada 2 horas
-    schedule.every(2).hours.do(verificar_mapa)
+    # Agenda para rodar conforme INTERVALO_MINUTOS
+    schedule.every(INTERVALO_MINUTOS).minutes.do(verificar_mapa)
 
-    while True:
-        schedule.run_pending()
-        time.sleep(60)
+    try:
+        while True:
+            schedule.run_pending()
+            time.sleep(60)
+    except KeyboardInterrupt:
+        log.info("Monitor encerrado pelo usuário.")
+        print("\nMonitor encerrado. Até mais!")
 
 
 if __name__ == "__main__":
