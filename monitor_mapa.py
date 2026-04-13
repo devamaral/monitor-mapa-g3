@@ -21,6 +21,7 @@ import time
 import json
 import re
 import os
+import sys
 import logging
 import logging.handlers
 import zipfile
@@ -282,9 +283,15 @@ def verificar_mapa():
 
 
 def main():
+    # Modo --once: executa uma verificação e sai (usado no GitHub Actions)
+    modo_once = "--once" in sys.argv
+
     log.info("=" * 50)
     log.info("  Monitor de Mapa iniciado")
-    log.info(f"  Verificação a cada {INTERVALO_MINUTOS} minuto(s)")
+    if modo_once:
+        log.info("  Modo: verificação única (--once)")
+    else:
+        log.info(f"  Verificação a cada {INTERVALO_MINUTOS} minuto(s)")
     log.info("=" * 50)
 
     # Autentica logo ao iniciar (abre o navegador só uma vez)
@@ -292,8 +299,13 @@ def main():
     autenticar_drive()
     log.info("Autenticado com sucesso!")
 
-    # Executa imediatamente na primeira vez
+    # Executa a verificação
     verificar_mapa()
+
+    # No modo --once encerra aqui (GitHub Actions)
+    if modo_once:
+        log.info("Verificação concluída.")
+        return
 
     # Agenda para rodar conforme INTERVALO_MINUTOS
     schedule.every(INTERVALO_MINUTOS).minutes.do(verificar_mapa)
