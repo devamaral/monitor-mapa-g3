@@ -19,7 +19,7 @@ jobs:
           python-version: "3.11"
 
       - name: Instalar dependências
-        run: pip install requests google-auth google-auth-oauthlib google-api-python-client
+        run: pip install requests schedule google-auth google-auth-oauthlib google-api-python-client
 
       - name: Escrever credenciais do Google
         run: |
