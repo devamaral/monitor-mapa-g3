@@ -1,0 +1,29 @@
+# ─── Credenciais e tokens (NUNCA subir no git) ───────────────────────────────
+credentials.json
+token.json
+
+# ─── Estado local do monitor ──────────────────────────────────────────────────
+snapshot_anterior.json
+
+# ─── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+*.log.*
+
+# ─── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# ─── Ambientes virtuais ───────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+
+# ─── IDEs e sistema ───────────────────────────────────────────────────────────
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
