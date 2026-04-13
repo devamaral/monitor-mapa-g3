@@ -2,9 +2,6 @@
 credentials.json
 token.json
 
-# ─── Estado local do monitor ──────────────────────────────────────────────────
-snapshot_anterior.json
-
 # ─── Logs ─────────────────────────────────────────────────────────────────────
 *.log
 *.log.*
