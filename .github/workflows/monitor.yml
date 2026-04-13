@@ -26,6 +26,14 @@ jobs:
           echo '${{ secrets.GOOGLE_CREDENTIALS }}' > credentials.json
           echo '${{ secrets.GOOGLE_TOKEN }}'       > token.json
 
+      - name: Validar credenciais
+        run: |
+          python -c "import json, sys; json.load(open('credentials.json'))" \
+            || { echo "ERRO: GOOGLE_CREDENTIALS inválido ou não configurado nos Secrets!"; exit 1; }
+          python -c "import json, sys; json.load(open('token.json'))" \
+            || { echo "ERRO: GOOGLE_TOKEN inválido ou não configurado nos Secrets!"; exit 1; }
+          echo "Credenciais OK."
+
       - name: Executar verificação
         run: python monitor_mapa.py --once
 
