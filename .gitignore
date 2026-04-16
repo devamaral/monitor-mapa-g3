@@ -4,6 +4,10 @@ token.json
 
 # ─── Estado local do monitor ──────────────────────────────────────────────────
 snapshot_anterior.json
+pending_alteracoes.json
+
+# ─── Histórico de alterações confirmadas (manter no git se quiser versionar) ──
+# historico_alteracoes.json
 
 # ─── Logs ─────────────────────────────────────────────────────────────────────
 *.log

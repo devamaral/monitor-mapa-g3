@@ -53,8 +53,17 @@ SNAPSHOT_FILE = "snapshot_anterior.json"
 # Arquivo de log
 LOG_FILE = "monitor_mapa.log"
 
+# Arquivo de alterações pendentes (aguardando confirmação)
+PENDING_FILE = "pending_alteracoes.json"
+
+# Arquivo de histórico de alterações confirmadas
+HISTORICO_FILE = "historico_alteracoes.json"
+
 # Intervalo de verificação em minutos (padrão: 5 min)
 INTERVALO_MINUTOS = 5
+
+# Horas para confirmar que uma alteração não foi acidental
+HORAS_CONFIRMACAO = 1
 
 # =========================================================
 
@@ -195,6 +204,136 @@ def detectar_mudancas(anterior, atual):
     return mudancas
 
 
+def detectar_mudancas_detalhado(anterior, atual):
+    """Retorna lista de dicts com detalhes estruturados das mudanças."""
+    mudancas = []
+
+    for nome, estilo_atual in atual.items():
+        if nome not in anterior:
+            mudancas.append({"tipo": "NOVA", "nome": nome, "estilo_antes": None, "estilo_depois": estilo_atual})
+        elif anterior[nome] != estilo_atual:
+            mudancas.append({"tipo": "COR_ALTERADA", "nome": nome, "estilo_antes": anterior[nome], "estilo_depois": estilo_atual})
+
+    for nome in anterior:
+        if nome not in atual:
+            mudancas.append({"tipo": "REMOVIDA", "nome": nome, "estilo_antes": anterior[nome], "estilo_depois": None})
+
+    return mudancas
+
+
+def carregar_pendentes():
+    if os.path.exists(PENDING_FILE):
+        with open(PENDING_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def salvar_pendentes(pendentes):
+    with open(PENDING_FILE, "w", encoding="utf-8") as f:
+        json.dump(pendentes, f, ensure_ascii=False, indent=2)
+
+
+def carregar_historico():
+    if os.path.exists(HISTORICO_FILE):
+        with open(HISTORICO_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {}
+
+
+def salvar_historico(historico):
+    with open(HISTORICO_FILE, "w", encoding="utf-8") as f:
+        json.dump(historico, f, ensure_ascii=False, indent=2)
+
+
+def registrar_no_historico(mudancas_confirmadas, detectado_em_str):
+    """Adiciona mudanças confirmadas ao historico_alteracoes.json."""
+    historico = carregar_historico()
+    agora = datetime.now()
+    data_key = agora.strftime("%Y-%m-%d")
+    confirmado_em = agora.strftime("%d/%m/%Y %H:%M:%S")
+
+    if data_key not in historico:
+        historico[data_key] = {"data": agora.strftime("%d/%m/%Y"), "total": 0, "mudancas": []}
+
+    for m in mudancas_confirmadas:
+        historico[data_key]["mudancas"].append({
+            "detectado_em": detectado_em_str,
+            "confirmado_em": confirmado_em,
+            "tipo": m["tipo"],
+            "ponto": m["nome"],
+            "estilo_antes": m["estilo_antes"],
+            "estilo_depois": m["estilo_depois"],
+        })
+
+    historico[data_key]["total"] = len(historico[data_key]["mudancas"])
+    salvar_historico(historico)
+    log.info(f"  Histórico atualizado: {len(mudancas_confirmadas)} alteração(ões) confirmada(s) em {data_key}.")
+
+
+def processar_confirmacoes(snapshot_atual):
+    """Verifica pendentes e confirma os que passaram do tempo de carência."""
+    pendentes = carregar_pendentes()
+    if not pendentes:
+        return
+
+    agora = datetime.now()
+    ainda_pendentes = []
+
+    for lote in pendentes:
+        detectado_em = datetime.fromisoformat(lote["detectado_em"])
+        horas_passadas = (agora - detectado_em).total_seconds() / 3600
+
+        if horas_passadas < HORAS_CONFIRMACAO:
+            ainda_pendentes.append(lote)
+            continue
+
+        # Verifica quais mudanças ainda persistem no snapshot atual
+        confirmadas = []
+        descartadas = []
+
+        for m in lote["mudancas"]:
+            nome = m["nome"]
+            if m["tipo"] == "NOVA":
+                if nome in snapshot_atual:
+                    confirmadas.append(m)
+                else:
+                    descartadas.append(m)
+            elif m["tipo"] == "REMOVIDA":
+                if nome not in snapshot_atual:
+                    confirmadas.append(m)
+                else:
+                    descartadas.append(m)
+            elif m["tipo"] == "COR_ALTERADA":
+                if nome in snapshot_atual and snapshot_atual[nome] != m["estilo_antes"]:
+                    confirmadas.append(m)
+                else:
+                    descartadas.append(m)
+
+        detectado_str = detectado_em.strftime("%d/%m/%Y %H:%M:%S")
+
+        if confirmadas:
+            log.info(f"✅ {len(confirmadas)} alteração(ões) confirmada(s) após {HORAS_CONFIRMACAO}h (detectadas em {detectado_str}).")
+            registrar_no_historico(confirmadas, detectado_str)
+
+        if descartadas:
+            log.info(f"↩️  {len(descartadas)} alteração(ões) descartada(s) (revertida(s) antes de {HORAS_CONFIRMACAO}h).")
+            for m in descartadas:
+                log.info(f"   → descartada: {m['tipo']} '{m['nome']}'")
+
+    salvar_pendentes(ainda_pendentes)
+
+
+def registrar_pendente(mudancas_detalhadas):
+    """Adiciona um novo lote de mudanças à fila de pendentes."""
+    pendentes = carregar_pendentes()
+    pendentes.append({
+        "detectado_em": datetime.now().isoformat(),
+        "mudancas": mudancas_detalhadas,
+    })
+    salvar_pendentes(pendentes)
+    log.info(f"  {len(mudancas_detalhadas)} alteração(ões) aguardando confirmação por {HORAS_CONFIRMACAO}h.")
+
+
 def obter_nome_base_drive(drive_service):
     """Lê o nome atual do arquivo no Drive e remove o sufixo '| Att:' se existir."""
     try:
@@ -254,6 +393,9 @@ def verificar_mapa():
 
     log.info(f"  {len(snapshot_atual)} marcação(ões) encontrada(s) no mapa.")
 
+    # Processa confirmações de alterações pendentes antes de detectar novas
+    processar_confirmacoes(snapshot_atual)
+
     snapshot_anterior = carregar_snapshot_anterior()
 
     if snapshot_anterior is None:
@@ -268,6 +410,10 @@ def verificar_mapa():
         log.info(f"⚠️  {len(mudancas)} mudança(s) detectada(s)!")
         for m in mudancas:
             log.info(f"   → {m}")
+
+        # Registra como pendente (aguarda confirmação antes de entrar no histórico)
+        mudancas_detalhadas = detectar_mudancas_detalhado(snapshot_anterior, snapshot_atual)
+        registrar_pendente(mudancas_detalhadas)
 
         # Renomeia o arquivo no Drive com a data/hora real da modificação
         drive_service = autenticar_drive()
