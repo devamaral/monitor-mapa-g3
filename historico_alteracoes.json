@@ -1,0 +1,177 @@
+{
+  "2026-04-14": {
+    "data": "14/04/2026",
+    "total": 5,
+    "mudancas": [
+      {
+        "detectado_em": "14/04/2026 12:20:51",
+        "confirmado_em": "14/04/2026 13:21:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "050335",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-558B2F-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "14/04/2026 14:01:51",
+        "confirmado_em": "14/04/2026 15:02:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "150583",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-097138-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "14/04/2026 14:11:55",
+        "confirmado_em": "14/04/2026 15:12:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "150580",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-C2185B-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "14/04/2026 14:47:57",
+        "confirmado_em": "14/04/2026 15:48:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "150618",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-880E4F-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "14/04/2026 15:03:03",
+        "confirmado_em": "14/04/2026 16:03:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "140390",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-097138-labelson",
+        "obs": "retroativo"
+      }
+    ],
+    "descartadas": [
+      {
+        "detectado_em": "14/04/2026 11:09:28",
+        "revertido_em": "14/04/2026 11:55:44",
+        "tipo": "COR_ALTERADA",
+        "ponto": "090086",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-795548-labelson",
+        "motivo": "revertido em 46min (dentro da carência de 1h)"
+      }
+    ]
+  },
+  "2026-04-15": {
+    "data": "15/04/2026",
+    "total": 10,
+    "mudancas": [
+      {
+        "detectado_em": "15/04/2026 10:45:08",
+        "confirmado_em": "15/04/2026 11:45:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "010040",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-558B2F-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "15/04/2026 10:45:08",
+        "confirmado_em": "15/04/2026 11:45:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "010316",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-558B2F-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "15/04/2026 11:00:18",
+        "confirmado_em": "15/04/2026 12:00:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "010030",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-558B2F-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "15/04/2026 11:50:32",
+        "confirmado_em": "15/04/2026 12:50:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "020348",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-C2185B-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "15/04/2026 11:56:16",
+        "confirmado_em": "15/04/2026 12:56:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "020358",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-C2185B-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "15/04/2026 13:49:25",
+        "confirmado_em": "15/04/2026 14:49:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "040051",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-558B2F-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "15/04/2026 13:49:25",
+        "confirmado_em": "15/04/2026 14:49:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "170034",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-7CB342-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "15/04/2026 13:49:25",
+        "confirmado_em": "15/04/2026 14:49:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "020272",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-000000-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "15/04/2026 13:49:25",
+        "confirmado_em": "15/04/2026 14:49:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "020273",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-000000-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "15/04/2026 13:49:25",
+        "confirmado_em": "15/04/2026 14:49:00",
+        "tipo": "COR_ALTERADA",
+        "ponto": "020549",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-000000-labelson",
+        "obs": "retroativo"
+      }
+    ],
+    "descartadas": []
+  },
+  "2026-04-13": {
+    "data": "13/04/2026",
+    "total": 0,
+    "mudancas": [],
+    "descartadas": [
+      {
+        "detectado_em": "13/04/2026 16:53:40",
+        "revertido_em": "13/04/2026 16:56:53",
+        "tipo": "COR_ALTERADA",
+        "ponto": "010030",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-9C27B0-labelson",
+        "motivo": "revertido em 3min (dentro da carência de 1h)"
+      }
+    ]
+  }
+}
