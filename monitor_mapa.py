@@ -245,33 +245,107 @@ def salvar_historico(historico):
         json.dump(historico, f, ensure_ascii=False, indent=2)
 
 
-def registrar_no_historico(mudancas_confirmadas, detectado_em_str):
-    """Adiciona mudanças confirmadas ao historico_alteracoes.json."""
-    historico = carregar_historico()
-    agora = datetime.now()
-    data_key = agora.strftime("%Y-%m-%d")
-    confirmado_em = agora.strftime("%d/%m/%Y %H:%M:%S")
+def _data_key_e_dia(dt):
+    return dt.strftime("%Y-%m-%d"), dt.strftime("%d/%m/%Y")
 
+
+def _garantir_dia(historico, data_key, dia_fmt):
     if data_key not in historico:
-        historico[data_key] = {"data": agora.strftime("%d/%m/%Y"), "total": 0, "mudancas": []}
+        historico[data_key] = {"data": dia_fmt, "total": 0, "mudancas": [], "descartadas": []}
+    if "descartadas" not in historico[data_key]:
+        historico[data_key]["descartadas"] = []
 
-    for m in mudancas_confirmadas:
+
+def _atualizar_total(historico, data_key):
+    historico[data_key]["total"] = sum(
+        1 for m in historico[data_key]["mudancas"] if m.get("status") == "confirmado"
+    )
+
+
+def adicionar_pendente_no_historico(mudancas_detalhadas, detectado_em_dt):
+    """Insere mudanças no histórico com status 'pendente' para visualização imediata."""
+    historico = carregar_historico()
+    data_key, dia_fmt = _data_key_e_dia(detectado_em_dt)
+    detectado_str = detectado_em_dt.strftime("%d/%m/%Y %H:%M:%S")
+    _garantir_dia(historico, data_key, dia_fmt)
+
+    for m in mudancas_detalhadas:
         historico[data_key]["mudancas"].append({
-            "detectado_em": detectado_em_str,
-            "confirmado_em": confirmado_em,
+            "detectado_em": detectado_str,
+            "confirmado_em": None,
+            "status": "pendente",
             "tipo": m["tipo"],
             "ponto": m["nome"],
             "estilo_antes": m["estilo_antes"],
             "estilo_depois": m["estilo_depois"],
         })
 
-    historico[data_key]["total"] = len(historico[data_key]["mudancas"])
+    _atualizar_total(historico, data_key)
     salvar_historico(historico)
-    log.info(f"  Histórico atualizado: {len(mudancas_confirmadas)} alteração(ões) confirmada(s) em {data_key}.")
+    log.info(f"  {len(mudancas_detalhadas)} alteração(ões) adicionada(s) ao histórico como pendente.")
+
+
+def confirmar_no_historico(mudancas_confirmadas, detectado_em_dt):
+    """Atualiza status de 'pendente' para 'confirmado' no histórico."""
+    historico = carregar_historico()
+    data_key, _ = _data_key_e_dia(detectado_em_dt)
+    detectado_str = detectado_em_dt.strftime("%d/%m/%Y %H:%M:%S")
+    agora_str = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+    if data_key not in historico:
+        return
+
+    for m_conf in mudancas_confirmadas:
+        for entry in historico[data_key]["mudancas"]:
+            if (entry.get("ponto") == m_conf["nome"] and
+                    entry.get("detectado_em") == detectado_str and
+                    entry.get("status") == "pendente"):
+                entry["status"] = "confirmado"
+                entry["confirmado_em"] = agora_str
+                break
+
+    _atualizar_total(historico, data_key)
+    salvar_historico(historico)
+    log.info(f"  {len(mudancas_confirmadas)} alteração(ões) confirmada(s) no histórico.")
+
+
+def descartar_do_historico(mudancas_descartadas, detectado_em_dt):
+    """Remove entradas pendentes do histórico e as move para 'descartadas'."""
+    historico = carregar_historico()
+    data_key, _ = _data_key_e_dia(detectado_em_dt)
+    detectado_str = detectado_em_dt.strftime("%d/%m/%Y %H:%M:%S")
+    agora_str = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+    if data_key not in historico:
+        return
+
+    for m_desc in mudancas_descartadas:
+        entry_remover = next(
+            (e for e in historico[data_key]["mudancas"]
+             if e.get("ponto") == m_desc["nome"] and
+             e.get("detectado_em") == detectado_str and
+             e.get("status") == "pendente"),
+            None
+        )
+        if entry_remover:
+            historico[data_key]["mudancas"].remove(entry_remover)
+            historico[data_key]["descartadas"].append({
+                "detectado_em": detectado_str,
+                "revertido_em": agora_str,
+                "tipo": m_desc["tipo"],
+                "ponto": m_desc["nome"],
+                "estilo_antes": m_desc["estilo_antes"],
+                "estilo_depois": m_desc["estilo_depois"],
+                "motivo": f"revertido antes de {HORAS_CONFIRMACAO}h",
+            })
+
+    _atualizar_total(historico, data_key)
+    salvar_historico(historico)
+    log.info(f"  {len(mudancas_descartadas)} alteração(ões) removida(s) do histórico (revertida(s)).")
 
 
 def processar_confirmacoes(snapshot_atual):
-    """Verifica pendentes e confirma os que passaram do tempo de carência."""
+    """Verifica pendentes e confirma ou descarta os que passaram do tempo de carência."""
     pendentes = carregar_pendentes()
     if not pendentes:
         return
@@ -287,22 +361,15 @@ def processar_confirmacoes(snapshot_atual):
             ainda_pendentes.append(lote)
             continue
 
-        # Verifica quais mudanças ainda persistem no snapshot atual
         confirmadas = []
         descartadas = []
 
         for m in lote["mudancas"]:
             nome = m["nome"]
             if m["tipo"] == "NOVA":
-                if nome in snapshot_atual:
-                    confirmadas.append(m)
-                else:
-                    descartadas.append(m)
+                (confirmadas if nome in snapshot_atual else descartadas).append(m)
             elif m["tipo"] == "REMOVIDA":
-                if nome not in snapshot_atual:
-                    confirmadas.append(m)
-                else:
-                    descartadas.append(m)
+                (confirmadas if nome not in snapshot_atual else descartadas).append(m)
             elif m["tipo"] == "COR_ALTERADA":
                 if nome in snapshot_atual and snapshot_atual[nome] != m["estilo_antes"]:
                     confirmadas.append(m)
@@ -313,24 +380,27 @@ def processar_confirmacoes(snapshot_atual):
 
         if confirmadas:
             log.info(f"✅ {len(confirmadas)} alteração(ões) confirmada(s) após {HORAS_CONFIRMACAO}h (detectadas em {detectado_str}).")
-            registrar_no_historico(confirmadas, detectado_str)
+            confirmar_no_historico(confirmadas, detectado_em)
 
         if descartadas:
             log.info(f"↩️  {len(descartadas)} alteração(ões) descartada(s) (revertida(s) antes de {HORAS_CONFIRMACAO}h).")
             for m in descartadas:
                 log.info(f"   → descartada: {m['tipo']} '{m['nome']}'")
+            descartar_do_historico(descartadas, detectado_em)
 
     salvar_pendentes(ainda_pendentes)
 
 
 def registrar_pendente(mudancas_detalhadas):
-    """Adiciona um novo lote de mudanças à fila de pendentes."""
+    """Adiciona lote à fila de pendentes e ao histórico como 'pendente' (tempo real)."""
+    agora = datetime.now()
     pendentes = carregar_pendentes()
     pendentes.append({
-        "detectado_em": datetime.now().isoformat(),
+        "detectado_em": agora.isoformat(),
         "mudancas": mudancas_detalhadas,
     })
     salvar_pendentes(pendentes)
+    adicionar_pendente_no_historico(mudancas_detalhadas, agora)
     log.info(f"  {len(mudancas_detalhadas)} alteração(ões) aguardando confirmação por {HORAS_CONFIRMACAO}h.")
 
 
