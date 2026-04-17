@@ -62,6 +62,25 @@ HISTORICO_FILE = "historico_alteracoes.json"
 # Intervalo de verificação em minutos (padrão: 5 min)
 INTERVALO_MINUTOS = 5
 
+# Mapa de cores hex → nome legível
+NOMES_CORES = {
+    "0288D1": "Azul Claro",
+    "558B2F": "Verde Escuro",
+    "7CB342": "Verde Medio",
+    "097138": "Verde Musgo",
+    "0F9D58": "Verde",
+    "C2185B": "Rosa",
+    "880E4F": "Rosa Escuro",
+    "9C27B0": "Roxo",
+    "FF5252": "Vermelho",
+    "795548": "Marrom",
+    "000000": "Preto",
+    "FF6D00": "Laranja",
+    "FFD600": "Amarelo",
+    "37474F": "Cinza Escuro",
+    "757575": "Cinza",
+}
+
 # Horas para confirmar que uma alteração não foi acidental
 HORAS_CONFIRMACAO = 1
 
@@ -204,6 +223,14 @@ def detectar_mudancas(anterior, atual):
     return mudancas
 
 
+def nome_cor(estilo):
+    """Converte estilo hex para nome legível. Ex: '#icon-1899-C2185B-labelson' → 'Rosa'"""
+    if not estilo:
+        return "desconhecido"
+    hex_code = estilo.replace("#icon-1899-", "").replace("-labelson", "")
+    return NOMES_CORES.get(hex_code, hex_code)
+
+
 def detectar_mudancas_detalhado(anterior, atual):
     """Retorna lista de dicts com detalhes estruturados das mudanças."""
     mudancas = []
@@ -276,6 +303,8 @@ def adicionar_pendente_no_historico(mudancas_detalhadas, detectado_em_dt):
             "status": "pendente",
             "tipo": m["tipo"],
             "ponto": m["nome"],
+            "cor_antes": nome_cor(m["estilo_antes"]),
+            "cor_depois": nome_cor(m["estilo_depois"]),
             "estilo_antes": m["estilo_antes"],
             "estilo_depois": m["estilo_depois"],
         })
@@ -334,6 +363,8 @@ def descartar_do_historico(mudancas_descartadas, detectado_em_dt):
                 "revertido_em": agora_str,
                 "tipo": m_desc["tipo"],
                 "ponto": m_desc["nome"],
+                "cor_antes": nome_cor(m_desc["estilo_antes"]),
+                "cor_depois": nome_cor(m_desc["estilo_depois"]),
                 "estilo_antes": m_desc["estilo_antes"],
                 "estilo_depois": m_desc["estilo_depois"],
                 "motivo": f"revertido antes de {HORAS_CONFIRMACAO}h",

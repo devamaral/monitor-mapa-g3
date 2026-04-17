@@ -1,4 +1,49 @@
 {
+  "_resumo": {
+    "total_marcacoes": 132,
+    "total_nao_azuis": 48,
+    "com_registro_no_log": 17,
+    "sem_registro_pre_monitoramento": 31,
+    "observacao": "Monitoramento iniciou em 13/04/2026. Pontos pintados antes disso nao tem data de alteracao registrada."
+  },
+  "pre_monitoramento": {
+    "data": "antes de 13/04/2026",
+    "total": 31,
+    "observacao": "Pontos ja estavam com cor diferente de Azul Claro quando o monitoramento comecou. Data real da alteracao desconhecida.",
+    "mudancas": [
+      { "ponto": "020167", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "100021", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "120009", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "120156", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "120158", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "120159", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "130162", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "130226", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "130228", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "130230", "cor_atual": "Vermelho",     "estilo": "#icon-1899-FF5252-labelson" },
+      { "ponto": "130235", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "130240", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "130242", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "130249", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "130324", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "150050", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "150052", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "150056", "cor_atual": "Verde Musgo",  "estilo": "#icon-1899-097138-labelson" },
+      { "ponto": "150062", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "150069", "cor_atual": "Preto",        "estilo": "#icon-1899-000000-labelson" },
+      { "ponto": "150079", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "160063", "cor_atual": "Verde Musgo",  "estilo": "#icon-1899-097138-labelson" },
+      { "ponto": "160064", "cor_atual": "Verde Musgo",  "estilo": "#icon-1899-097138-labelson" },
+      { "ponto": "160065", "cor_atual": "Verde Escuro", "estilo": "#icon-1899-558B2F-labelson" },
+      { "ponto": "160135", "cor_atual": "Verde Musgo",  "estilo": "#icon-1899-097138-labelson" },
+      { "ponto": "160185", "cor_atual": "Rosa Escuro",  "estilo": "#icon-1899-880E4F-labelson" },
+      { "ponto": "160212", "cor_atual": "Preto",        "estilo": "#icon-1899-000000-labelson" },
+      { "ponto": "160254", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "160255", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "160292", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" },
+      { "ponto": "180247", "cor_atual": "Verde",        "estilo": "#icon-1899-0F9D58-labelson" }
+    ]
+  },
   "2026-04-13": {
     "data": "13/04/2026",
     "total": 0,
@@ -9,9 +54,11 @@
         "revertido_em": "13/04/2026 16:56:53",
         "tipo": "COR_ALTERADA",
         "ponto": "010030",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Roxo",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-9C27B0-labelson",
-        "motivo": "revertido em 3min (dentro da carência de 1h)"
+        "motivo": "revertido em 3min (dentro da carencia de 1h)"
       }
     ]
   },
@@ -25,6 +72,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "050335",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Verde Escuro",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-558B2F-labelson"
       },
@@ -34,6 +83,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "150583",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Verde Musgo",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-097138-labelson"
       },
@@ -43,6 +94,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "150580",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Rosa",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-C2185B-labelson"
       },
@@ -52,6 +105,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "150618",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Rosa Escuro",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-880E4F-labelson"
       },
@@ -61,6 +116,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "140390",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Verde Musgo",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-097138-labelson"
       }
@@ -71,9 +128,11 @@
         "revertido_em": "14/04/2026 11:55:44",
         "tipo": "COR_ALTERADA",
         "ponto": "090086",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Marrom",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-795548-labelson",
-        "motivo": "revertido em 46min (dentro da carência de 1h)"
+        "motivo": "revertido em 46min (dentro da carencia de 1h)"
       }
     ]
   },
@@ -87,6 +146,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "010040",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Verde Escuro",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-558B2F-labelson"
       },
@@ -96,6 +157,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "010316",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Verde Escuro",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-558B2F-labelson"
       },
@@ -105,6 +168,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "010030",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Verde Escuro",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-558B2F-labelson"
       },
@@ -114,6 +179,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "020348",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Rosa",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-C2185B-labelson"
       },
@@ -123,6 +190,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "020358",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Rosa",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-C2185B-labelson"
       },
@@ -132,6 +201,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "040051",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Verde Escuro",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-558B2F-labelson"
       },
@@ -141,6 +212,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "170034",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Verde Medio",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-7CB342-labelson"
       },
@@ -150,6 +223,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "020272",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Preto",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-000000-labelson"
       },
@@ -159,6 +234,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "020273",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Preto",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-000000-labelson"
       },
@@ -168,6 +245,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "020549",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Preto",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-000000-labelson"
       }
@@ -184,6 +263,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "090654",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Rosa",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-C2185B-labelson"
       },
@@ -193,6 +274,8 @@
         "status": "confirmado",
         "tipo": "COR_ALTERADA",
         "ponto": "090232",
+        "cor_antes": "Azul Claro",
+        "cor_depois": "Rosa",
         "estilo_antes": "#icon-1899-0288D1-labelson",
         "estilo_depois": "#icon-1899-C2185B-labelson"
       }
