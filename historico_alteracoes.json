@@ -158,6 +158,31 @@
     ],
     "descartadas": []
   },
+  "2026-04-17": {
+    "data": "17/04/2026",
+    "total": 2,
+    "mudancas": [
+      {
+        "detectado_em": "17/04/2026 10:10:55",
+        "confirmado_em": "17/04/2026 11:10:55",
+        "tipo": "COR_ALTERADA",
+        "ponto": "090654",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-C2185B-labelson",
+        "obs": "retroativo"
+      },
+      {
+        "detectado_em": "17/04/2026 10:31:16",
+        "confirmado_em": "17/04/2026 11:31:16",
+        "tipo": "COR_ALTERADA",
+        "ponto": "090232",
+        "estilo_antes": "#icon-1899-0288D1-labelson",
+        "estilo_depois": "#icon-1899-C2185B-labelson",
+        "obs": "retroativo"
+      }
+    ],
+    "descartadas": []
+  },
   "2026-04-13": {
     "data": "13/04/2026",
     "total": 0,
